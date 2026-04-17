@@ -23,12 +23,7 @@ const Part = ({ name, exercises }) => {
 
 const Total = ({ course }) => {
   const items = course.parts
-
-  if (items.length === 0) return null
-  let sum = 0
-  items.forEach(element => {
-    sum = sum + element.exercises
-  });
+  const sum = items.reduce((sum, item) => sum + item.exercises, 0)
 
   return (
     <h3>total of {sum} exercises</h3>
