@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import PhoneItem from './components/PhoneItem'
+import PersonsList from './components/PersonsList'
 import SearchFilter from './components/SearchFilter'
 import PersonForm from './components/PersonForm'
 
@@ -86,11 +86,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      {
-        namesToShow.map(person =>
-         <PhoneItem key={person.id} person={person} />
-        )
-      }
+      <PersonsList persons={namesToShow} />
 
     </div>
   )
