@@ -1,6 +1,6 @@
-const PhoneItem = ({ phone, number }) => {
+const PhoneItem = ({ person }) => {
   return (
-    <p>{phone.name} {number.number}</p>
+    <p>{person.name} {person.number}</p>
   )
 }
 

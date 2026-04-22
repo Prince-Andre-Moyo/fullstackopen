@@ -5,13 +5,11 @@ import { useState } from 'react'
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
-
-  const [contacts, setContacts] = useState([])
   const [newNumber, setNewNumber] = useState('')
+  const [searchName, setSearchName] = useState('')
 
-
-
-  const addNameAndContact = (event) => {
+ 
+  const addPerson = (event) => {
     event.preventDefault()
 
     if (newName === ''){
@@ -24,29 +22,22 @@ const App = () => {
       return
     }
 
-    // for the name
-    const nameObject = {
-      name: newName
-    }
-
-    const exists = persons.some(item => item.name === nameObject.name)
-    if (!exists) {
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-    }
-    else{
-      alert(`${nameObject.name} is already added to phonebook!`)
-      setNewName('')
-    }
-
-    // for the contact
-    const contactObject = {
+    const personObject = {
+      id: String(persons.length + 1),
+      name: newName,
       number: newNumber
     }
 
-    setContacts(contacts.concat(contactObject))
-    setNewNumber('')
+    const exists = persons.some(item => item.name === personObject.name)
 
+    if (!exists) {
+      setPersons(persons.concat(personObject))
+      setNewName('')
+      setNewNumber('')
+    }
+    else{
+      alert(`${nameObject.name} is already added to phonebook!`)
+    }
   }
 
   const handleNameChange = (event) => {
@@ -57,11 +48,30 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleSearchNameChange = (event) => {
+    setSearchName(event.target.value)
+  }
+
+  const foundNames = persons.filter(person =>
+    person.name.toLowerCase().includes(searchName.toLowerCase())
+  )
+  
+  const namesToShow = foundNames.length !== 0 ? foundNames : persons
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addNameAndContact}>
+
+      <div>
+        filter shown with <input 
+          value={searchName}
+          onChange={handleSearchNameChange}
+        />
+      </div>
+
+      <h2>add a new</h2>
+
+      <form onSubmit={addPerson}>
         <div>
           name: <input 
             value={newName}
@@ -78,13 +88,15 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
+
       <h2>Numbers</h2>
+
       {
-        persons.map((person, i) =>
-          <PhoneItem key={person.name} phone={person} number={contacts[i]}/>
+        namesToShow.map(person =>
+         <PhoneItem key={person.id} person={person} />
         )
       }
-      {/* <div>debug: {newName}</div> */}
+
     </div>
   )
 }
