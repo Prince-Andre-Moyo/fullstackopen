@@ -1,9 +1,16 @@
-import PhoneItem from './components/PhoneItem'
 import { useState } from 'react'
+import PhoneItem from './components/PhoneItem'
+import SearchFilter from './components/SearchFilter'
+import PersonForm from './components/PersonForm'
 
 
 const App = () => {
-  const [persons, setPersons] = useState([]) 
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
@@ -62,32 +69,20 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <div>
-        filter shown with <input 
-          value={searchName}
-          onChange={handleSearchNameChange}
-        />
-      </div>
+      <SearchFilter 
+        value={searchName}
+        onChange={handleSearchNameChange} 
+      />
 
       <h2>add a new</h2>
 
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input 
-            value={newName}
-            onChange={handleNameChange}
-          />
-        </div>
-        <div>
-          number: <input 
-            value={newNumber}
-            onChange={handleContactChange}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm 
+        onSubmit={addPerson}
+        nameValue={newName}
+        onNameChange={handleNameChange}
+        numberValue={newNumber}
+        onNumberChange={handleContactChange}
+      />
 
       <h2>Numbers</h2>
 
