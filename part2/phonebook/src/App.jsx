@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import PersonsList from './components/PersonsList'
 import SearchFilter from './components/SearchFilter'
@@ -52,6 +51,19 @@ useEffect(() => {
     }
   }
 
+  const handleDelete = (id) => {
+    const foundPerson = persons.find(p => p.id === id)
+    const result = confirm(`Delete ${foundPerson.name} ?`)
+
+    if(result) {
+      personService.remove(foundPerson.id).then((returnedPerson) => {
+        setPersons(persons.filter(p => p.id !== id))
+      })
+    } else {
+      return
+    }
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -91,7 +103,7 @@ useEffect(() => {
 
       <h2>Numbers</h2>
 
-      <PersonsList persons={namesToShow} />
+      <PersonsList persons={namesToShow} onPress={handleDelete}/>
 
     </div>
   )

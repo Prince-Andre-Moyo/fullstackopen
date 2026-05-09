@@ -1,6 +1,8 @@
-const PhoneItem = ({ person }) => {
+const PhoneItem = ({ person, onPress }) => {
   return (
-    <p>{person.name} {person.number}</p>
+    <div>
+      <p> {person.name} {person.number} <button onClick={() => onPress(person.id)}>delete</button> </p>
+    </div>
   )
 }
 
