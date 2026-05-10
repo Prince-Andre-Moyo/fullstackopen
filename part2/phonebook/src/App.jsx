@@ -59,19 +59,27 @@ const App = () => {
       if(result) {
         const updateNumberPerson = {...personFound, number: personObject.number}
 
-        personService.update(updateNumberPerson.id, updateNumberPerson).then((returnedPerson) => {
-          setPersons(prevPersons =>
-            prevPersons.map(person =>
-              person.id === returnedPerson.id ? returnedPerson : person
+        personService
+          .update(updateNumberPerson.id, updateNumberPerson)
+          .then((returnedPerson) => {
+            setPersons(prevPersons =>
+              prevPersons.map(person =>
+                person.id === returnedPerson.id ? returnedPerson : person
             )
           )
-        setNewName('')
-        setNewNumber('')
-        setSuccessMessage(`Updated ${personObject.name}'s phone numbers`)
-        setTimeout(() => {
-          setSuccessMessage(null)
+          setNewName('')
+          setNewNumber('')
+          setSuccessMessage(`Updated ${personObject.name}'s phone numbers`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch((error) => {
+          setErrorMessage(`Information of ${personObject.name} has already been removed from server`)
+          setTimeout(() => {
+          setErrorMessage(null)
         }, 5000)
-      })
+        })
     } else {return}
     }
   }
