@@ -11,11 +11,11 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
 
-useEffect(() => {
-  personService.getAll().then((initialPersons) => {
-    setPersons(initialPersons)
-  })
-}, [])
+  useEffect(() => {
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons)
+    })
+  }, [])
 
  
   const addPerson = (event) => {
@@ -37,9 +37,9 @@ useEffect(() => {
       number: newNumber
     }
 
-    const exists = persons.some(item => item.name === personObject.name)
+    const personFound = persons.find(item => item.name === personObject.name)
 
-    if (!exists) {
+    if (!personFound) {
       personService.create(personObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
@@ -47,7 +47,21 @@ useEffect(() => {
       })
     }
     else{
-      alert(`${nameObject.name} is already added to phonebook!`)
+      const result = confirm(`${personObject.name} is already added to phonebook, replace the old number with a new one?`)
+
+      if(result) {
+        const updateNumberPerson = {...personFound, number: personObject.number}
+
+        personService.update(updateNumberPerson.id, updateNumberPerson).then((returnedPerson) => {
+          setPersons(prevPersons =>
+            prevPersons.map(person =>
+              person.id === returnedPerson.id ? returnedPerson : person
+            )
+          )
+        setNewName('')
+        setNewNumber('')
+      })
+    } else {return}
     }
   }
 
